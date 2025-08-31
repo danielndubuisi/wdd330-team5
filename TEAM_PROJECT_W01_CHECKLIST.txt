@@ -1,0 +1,33 @@
+TEAM PROJECT - QUICK CHECKLIST (W01)
+
+1. Clone repo
+   git clone https://github.com/Ethem-Deli/wdd330-team5.git
+
+2. Install dependencies
+   npm install
+
+3. Run project
+   npm run dev
+
+4. Run checks before committing:
+   • npm run lint
+   • npm run test
+   • npm run format
+
+5. Create branch
+   git checkout -b feature/your-feature
+
+6. Stage + commit changes
+   git add .
+   git commit -m "Describe changes"
+
+7. Push branch
+   git push origin feature/your-feature
+
+8. Open Pull Request (PR) on GitHub
+
+9. After merge: Deploy to Netlify
+
+---
+✅ Use this checklist every time you work on the project!
+#Ethem_Deli

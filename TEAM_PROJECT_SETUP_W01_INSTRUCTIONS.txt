@@ -1,0 +1,230 @@
+WDD 330 – W01 Team Project Setup (Sleep Outside)
+Plain‑Text Instructions for Collaborators (add this file to the repo root)
+
+================================================================================
+GOAL
+Set up Trello + GitHub + local dev for the team, agree on code standards, and
+deploy a production build to Netlify. Use these steps every time you work.
+================================================================================
+
+SECTIONS
+1) Trello board (team planning)
+2) GitHub repository (template + access)
+3) Clone & install (local setup)
+4) Project scripts (start, build, lint, format, test)
+5) Code style agreement (ESLint quotes rule)
+6) Run formatter & linter (commit hygiene)
+7) Local dev server (Vite)
+8) Build & deploy (Netlify)
+9) Merge conflicts (how to resolve)
+10) Branching practice (initial exercise)
+11) Pull requests (team review)
+12) Wrap‑up (Trello to Done)
+
+================================================================================
+1) Trello board (team planning)
+================================================================================
+Driver (one teammate) does Steps 1–2, then invites everyone:
+
+1. Log in to Trello and create a workspace named “WDD 330” (or similar).
+2. Copy the “Sleep Outside” Trello board into your workspace.
+3. Invite teammates to the board via their Trello emails.
+4. (Optional) Set the board to Public if needed.
+5. Assign all teammates to the card: “Team Activity W01: Setup project for all team members”.
+6. Move that card to the “Doing” column.
+
+Tip: Keep the board updated daily. Add tasks, assign members, move cards across the
+workflow (To Do → Doing → Review → Done).
+
+================================================================================
+2) GitHub repository (template + access)
+================================================================================
+1. In GitHub, open the “Sleep Outside Repository Template” and click “Use this template”.
+2. Name the new repository (ex: sleepoutside‑team‑alpha).
+3. Open Settings → Collaborators/Manage Access → add all teammates.
+4. Everyone: accept the invite sent by GitHub.
+
+================================================================================
+3) Clone & install (local setup)
+================================================================================
+Everyone (on your own machine):
+
+1. Clone the team repository.
+2. Open the repo folder in VS Code.
+3. Open the terminal in VS Code (Ctrl + `). It should start in the project root.
+4. Verify you see package.json here:
+   - Windows:  dir
+   - macOS/Linux:  ls
+5. Install dependencies:
+   npm install
+
+After install completes, a node_modules folder will appear.
+
+================================================================================
+4) Project scripts (start, build, lint, format, test)
+================================================================================
+Defined in package.json "scripts":
+
+  "start":  Starts the local dev server (Vite).
+  "build":  Builds the production bundle to /dist.
+  "lint":   Runs ESLint to find style/syntax issues.
+  "format": Runs Prettier to auto‑format code consistently.
+  "test":   Runs Jest tests (if any are present).
+
+Run any script with:
+  npm run <scriptName>
+
+Examples:
+  npm run start
+  npm run lint
+  npm run format
+  npm run build
+
+================================================================================
+5) Code style agreement (ESLint quotes rule)
+================================================================================
+1. Open .eslintrc.json.
+2. Find the rule:
+   "quotes": ["error", "single"]
+3. As a team, decide SINGLE or DOUBLE quotes.
+   - If you prefer double quotes, change to:
+     "quotes": ["error", "double"]
+4. Commit the agreed standard so everyone is consistent.
+
+Note: The exact quote style doesn’t matter, but consistency does. ESLint enforces
+your team’s choice to prevent churn in PRs.
+
+================================================================================
+6) Run formatter & linter (commit hygiene)
+================================================================================
+Before each commit:
+1. Auto‑format:
+   npm run format
+2. Lint & fix issues:
+   npm run lint
+   - Fix any reported errors before committing.
+3. Commit small, focused changes with clear messages.
+
+================================================================================
+7) Local dev server (Vite)
+================================================================================
+1. Start the dev server:
+   npm run start
+2. Vite will start at http://localhost:xxxx (port may vary). If it does not open
+   automatically, paste the URL into your browser.
+3. Stop the server with Ctrl + C in the same terminal.
+
+Use this Vite server for development (do NOT use Live Server).
+
+================================================================================
+8) Build & deploy (Netlify)
+================================================================================
+One teammate (only) handles initial deploy:
+
+1. Build the production bundle:
+   npm run build
+   - This creates the /dist folder.
+   - /dist is ignored by Git (see .gitignore) and will not be pushed.
+2. Create a free Netlify account and log in.
+3. Add new site → “Import an Existing Project”.
+4. Connect GitHub and pick the team repo.
+5. Select branch: main
+6. Build command:  npm run build
+7. Deploy site.
+8. Share the generated Netlify URL (e.g., https://super-flower-88b6ac.netlify.app)
+   with the team and add it to README.md for easy access.
+
+Notes:
+- Netlify will auto‑deploy whenever changes are pushed to main.
+- After each merge to main, check the Netlify URL to confirm the site is healthy.
+
+================================================================================
+9) Merge conflicts (how to resolve)
+================================================================================
+Setup for the exercise:
+1. git pull  (always pull before you start working)
+2. Create (if not present) a team.txt file at the repo root.
+3. Add:
+   - Link to Trello board
+   - Your name
+4. Commit and push.
+5. If multiple teammates push different versions of team.txt, Git will report a conflict.
+
+Resolving:
+- Open the file showing conflict markers like below:
+
+<<<<<<< HEAD
+(Your local changes)
+=======
+(Remote changes from GitHub)
+>>>>>>> <commit or branch>
+
+Choose one of these in VS Code:
+- Accept Current Change  (keep your local changes)
+- Accept Incoming Change (keep the remote changes)
+- Accept Both Changes    (keep both, then clean up)
+
+Example: Accept both, then edit to keep the most current/complete data.
+Commit the resolution and push.
+
+Prevention tips:
+- Always pull before starting work.
+- Commit early and often (small commits).
+- Use modules to reduce file overlap.
+- Use branches for features/fixes.
+
+================================================================================
+10) Branching practice (initial exercise)
+================================================================================
+1. Create a new branch named:  <your‑initials>--branch‑test
+2. Add a file at repo root:     yourname.txt  (put your name inside)
+3. Commit and push your branch.
+4. (Optional) Create a pull request (see Section 11) so everyone can see the flow.
+5. Try switching branches locally and observe file changes:
+   - main ↔ your‑branch ↔ another teammate’s branch
+
+For real work this semester:
+- Create a branch per task with a clear name:
+  <your‑initials>--<feature‑name>
+  Example: jd--product‑card‑hover
+- When the task is done and tested, open a PR into main.
+
+================================================================================
+11) Pull requests (team review)
+================================================================================
+1. From your feature branch, open a Pull Request into main on GitHub.
+2. In the PR description, explain what changed and how to test.
+3. Teammates review (request changes or approve).
+4. Driver (or designated maintainer) merges when checks pass.
+5. Delete merged branches to keep the repo clean.
+6. Verify Netlify updated and the site still works.
+
+================================================================================
+12) Wrap‑up (Trello to Done)
+================================================================================
+- Move “Team Activity W01” card to “Done” once:
+  - Repo created & collaborators added
+  - Everyone cloned & installed
+  - ESLint/Prettier standard chosen
+  - Format + Lint run cleanly
+  - Dev server verified locally
+  - Netlify deploy working
+  - team.txt created and conflicts exercise completed
+  - Branching + PR flow understood by all
+
+================================================================================
+Quick Command Reference
+================================================================================
+npm install
+npm run start
+npm run format
+npm run lint
+npm run build
+git pull
+git checkout -b <branch>
+git add -A
+git commit -m "feat: message"
+git push -u origin <branch>
+
+End of file.
+#Ethem_Deli
