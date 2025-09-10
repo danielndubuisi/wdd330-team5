@@ -1,50 +1,33 @@
-// This class is responsible for rendering a list of products into HTML
-// We export it as default so it can be imported in main.js
-
+// ProductList.mjs
 export default class ProductList {
   constructor(category, dataSource, listElement) {
-    // Store constructor parameters for later use
-    this.category = category;   // ex: "tents"
-    this.dataSource = dataSource; // instance of ProductData
-    this.listElement = listElement; // target DOM element (like <ul class="product-list">)
+    this.category = category;
+    this.dataSource = dataSource;
+    this.listElement = listElement;
   }
 
-  // init() loads data and then renders it
   async init() {
-    // fetch product data using dataSource (returns a Promise)
     const list = await this.dataSource.getData();
-
-    // call renderList to display products
+    console.log("Full product list from JSON:", list);
     this.renderList(list);
   }
 
-  // render the entire product list
-  renderList(list) {
-    // clear any old content first
+  renderList(productList) {
     this.listElement.innerHTML = "";
-
-    // loop through each product and render a card
-    list.forEach(product => {
-      const item = this.renderProductCard(product);
-      this.listElement.appendChild(item);
+    productList.forEach((product) => {
+      this.listElement.innerHTML += this.productCardTemplate(product);
     });
   }
 
-  // render a single product card (HTML element)
-  renderProductCard(product) {
-    const li = document.createElement("li");
-    li.classList.add("product-card");
-
-    li.innerHTML = `
-      <a href="product.html?id=${product.Id}">
-        <img src="${product.Image}" alt="${product.Name}">
-        <h2>${product.Name}</h2>
-        <p class="price">$${product.FinalPrice}</p>
-      </a>
+  productCardTemplate(product) {
+    return `
+      <li class="product-card">
+        <a href="product_pages/product-detail.html?product=${product.Id}">
+          <img src="${product.Image}" alt="${product.Name}">
+          <h2 class="card__name">${product.Name}</h2>
+          <p class="card__price">$${product.FinalPrice}</p>
+        </a>
+      </li>
     `;
-
-    return li;
   }
 }
-// This class is responsible for rendering a list of products into HTML
-// We export it as default so it can be imported in main.js

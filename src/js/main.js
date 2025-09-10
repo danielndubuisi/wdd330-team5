@@ -1,15 +1,15 @@
-// import the ProductData module (responsible for fetching product data from tents.json)
+// Import ProductData and ProductList classes
 import ProductData from "./ProductData.mjs";
-// import the ProductList module (responsible for rendering the product list to the page)
 import ProductList from "./ProductList.mjs";
 
-// Create a new data source for tents
+// Create a data source for tents (points to tents.json)
 const dataSource = new ProductData("tents");
 
-// Find the <ul class="product-list"> in index.html where we want products to show
+// Find the <ul class="product-list"> element in your index.html
 const listElement = document.querySelector(".product-list");
 
-// Create an instance of ProductList (category, data source, output element)
+// Create an instance of ProductList
 const productList = new ProductList("tents", dataSource, listElement);
-// Initialize the product list (this loads data and renders it)
+
+// Initialize it (this will fetch JSON + render products)
 productList.init();
