@@ -1,2 +1,6 @@
 Team 5
 Ethem Deli
+
+things done for code
+"preview": "vite preview" added to package.json file
+"src/product_pages/index.html" added to vite.config.js 
