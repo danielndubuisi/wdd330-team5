@@ -1,0 +1,11 @@
+github
+https://github.com/Ethem-Deli/wdd330-team5.git
+
+Trello board
+https://trello.com/b/Ly7ph37v/sleep-outside-team-5
+
+invitation for trello 
+https://trello.com/invite/b/68b41d910b7012c446a814f5/ATTI49bb924282fe82c8d53375716672d15030092C5C/sleep-outside-team-5
+
+netlify
+https://68b47d1b42a180068c344edd--cozy-monstera-f5c5a0.netlify.app/
