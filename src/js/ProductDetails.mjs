@@ -1,6 +1,7 @@
-// src/js/ProductDetails.mjs
 // Class that loads a single product by id and renders the product detail HTML
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, getparam } from "./utils.mjs";
+
+const productId = getParam("product"); 
 
 export default class ProductDetails {
   constructor(productId, dataSource) {

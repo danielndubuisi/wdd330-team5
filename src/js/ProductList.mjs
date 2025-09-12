@@ -21,7 +21,7 @@ export default class ProductList {
   productCardTemplate(product) {
     return `
       <li class="product-card">
-        <a href="product_pages/product-detail.html?product=${product.Id}">
+        <a href="/product_pages/product-detail.html?product=${product.Id}">
           <img src="${product.Image}" alt="${product.Name}">
           <h2 class="card__name">${product.Name}</h2>
           <p class="card__price">$${product.FinalPrice}</p>
