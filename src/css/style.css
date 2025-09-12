@@ -261,3 +261,21 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+/*visual discount indicator*/
+.product__discount {
+  display: inline-block;
+  background: #e63946;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.3em 0.6em;
+  border-radius: 0.4em;
+  margin-left: 10px;
+  font-size: 0.9em;
+}
+
+.product__retail {
+  text-decoration: line-through;
+  color: #666;
+  margin-left: 8px;
+  font-size: 0.9em;
+}

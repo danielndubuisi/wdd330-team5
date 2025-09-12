@@ -2,20 +2,27 @@ function convertToJson(res) {
   if (res.ok) {
     return res.json();
   } else {
-    throw new Error("Bad Response");
+    throw new Error(`Bad response: ${res.status} ${res.statusText}`);
   }
 }
 
 export default class ProductData {
   constructor(category) {
     this.category = category;
-    this.path = `../json/${this.category}.json`;
+    // Always served from /json/... because it's inside public/
+    this.path = `/json/${this.category}.json`;
   }
-  getData() {
-    return fetch(this.path)
-      .then(convertToJson)
-      .then((data) => data);
+
+  async getData() {
+    try {
+      const data = await fetch(this.path).then(convertToJson);
+      return data;
+    } catch (err) {
+      console.error("Error loading data:", err);
+      return [];
+    }
   }
+
   async findProductById(id) {
     const products = await this.getData();
     return products.find((item) => item.Id === id);
