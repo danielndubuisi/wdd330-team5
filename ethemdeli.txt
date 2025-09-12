@@ -1,6 +1,7 @@
 Team 5
 Ethem Deli
 
-things done for code
-"preview": "vite preview" added to package.json file
-"src/product_pages/index.html" added to vite.config.js 
+
+Task: Individual Activity W02: Dynamic product list.
+Source: https://github.com/Ethem-Deli/wdd330-team5
+Site: https://deploy-preview-5--cozy-monstera-f5c5a0.netlify.app/

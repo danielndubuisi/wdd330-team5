@@ -1,64 +1,81 @@
-import { 
-  getLocalStorage, 
-  setLocalStorage, 
-  productIsInArray, 
-  findProductIndexInArrayById, 
-  getResponsiveImage 
-} from "./utils.mjs";
+// src/js/ProductDetails.mjs
+// Class that loads a single product by id and renders the product detail HTML
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 export default class ProductDetails {
-
   constructor(productId, dataSource) {
+    // productId (string), dataSource is instance of ProductData
     this.productId = productId;
-    this.product = {};
     this.dataSource = dataSource;
+    this.product = {}; // will hold the fetched product object
   }
 
+  // initialize: fetch product then render and attach handlers
   async init() {
-    // Fetch product data by Id
+    // 1) fetch the product by id (findProductById returns a Promise)
     this.product = await this.dataSource.findProductById(this.productId);
 
-    // Render details on the page
+    // 2) if product not found, show a simple error and exit
+    if (!this.product) {
+      console.error(`Product not found: ${this.productId}`);
+      document.querySelector(".product-detail").innerHTML = "<p>Product not found.</p>";
+      return;
+    }
+
+    // 3) render the product details into the DOM
     this.renderProductDetails();
 
-    // Attach add-to-cart button listener
-    document
-      .getElementById('addToCart')
-      .addEventListener('click', this.addProductToCart.bind(this));
-  }
-
-  addProductToCart() {
-    const cartItems = getLocalStorage("so-cart") || [];
-    const productId = this.product.Id;
-
-    if (cartItems.length !== 0 && productIsInArray(productId, cartItems)) {
-      // If product already exists in cart, increase quantity
-      const itemIndex = findProductIndexInArrayById(productId, cartItems);
-      cartItems[itemIndex].Quantity++;
-      setLocalStorage("so-cart", cartItems);
-    } else {
-      // Otherwise add it as a new item with Quantity = 1
-      this.product.Quantity = 1;
-      cartItems.push(this.product);
-      setLocalStorage("so-cart", cartItems);
+    // 4) attach Add to Cart button listener (bind this so method sees correct `this`)
+    const addBtn = document.getElementById("addToCart");
+    if (addBtn) {
+      addBtn.addEventListener("click", this.addProductToCart.bind(this));
     }
   }
 
-  renderProductDetails() {
-    productDetailsTemplate(this.product);
+  // add current product to cart in localStorage
+  addProductToCart() {
+    // get current cart array (or empty array if not present)
+    const cartKey = "so-cart";
+    const cart = getLocalStorage(cartKey) || [];
+
+    // find existing item
+    const existingIndex = cart.findIndex((item) => item.Id === this.product.Id);
+
+    if (existingIndex > -1) {
+      // increment quantity
+      cart[existingIndex].Quantity = (cart[existingIndex].Quantity || 1) + 1;
+    } else {
+      // add new product copy with Quantity = 1
+      const newItem = { ...this.product, Quantity: 1 };
+      cart.push(newItem);
+    }
+
+    // save back to localStorage
+    setLocalStorage(cartKey, cart);
+
+    // optional: quick visual feedback
+    // alert(`${this.product.NameWithoutBrand} added to cart`);
   }
-}
 
-// Template for product details
-function productDetailsTemplate(product) {
-  document.querySelector('h2').textContent = product.Brand.Name;
-  document.querySelector('h3').textContent = product.NameWithoutBrand;
+  // Render product details into the page
+  renderProductDetails() {
+    // Fill brand / name / image / price / description
+    const brandEl = document.getElementById("productBrand");
+    const nameEl = document.getElementById("productName");
+    const imgEl = document.getElementById("productImage");
+    const priceEl = document.getElementById("productFinalPrice");
+    const descEl = document.getElementById("productDesc");
 
-  const productImage = document.getElementById('productImage');
-  productImage.src = getResponsiveImage(product);
-  productImage.alt = product.NameWithoutBrand;
+    // Use safe property names depending on your JSON structure
+    brandEl.textContent = this.product.Brand ? this.product.Brand.Name : "";
+    nameEl.textContent = this.product.NameWithoutBrand || this.product.Name || "";
+    // Image: try Images.PrimaryMedium, fallback to Image
+    imgEl.src = (this.product.Images && this.product.Images.PrimaryMedium) || this.product.Image || "";
+    imgEl.alt = this.product.NameWithoutBrand || this.product.Name || "";
 
-  document.getElementById('productFinalPrice').textContent = `$${product.FinalPrice}`;
-  document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
-  document.getElementById('addToCart').dataset.id = product.Id;
+    priceEl.textContent = `$${this.product.FinalPrice != null ? this.product.FinalPrice : ""}`;
+
+    // Use DescriptionHtmlSimple if present, otherwise plain Description or empty string
+    descEl.innerHTML = this.product.DescriptionHtmlSimple || this.product.Description || "";
+  }
 }
