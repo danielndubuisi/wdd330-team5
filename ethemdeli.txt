@@ -4,5 +4,5 @@ Ethem Deli
 
 Task: Dynamic product list.
 Source: https://github.com/Ethem-Deli/wdd330-team5
-Site: https://app.netlify.com/projects/cozy-monstera-f5c5a0/deploys/68c44af53edb480008dc8cc9
+Site: https://deploy-preview-7--cozy-monstera-f5c5a0.netlify.app/
 netlify: https://cozy-monstera-f5c5a0.netlify.app/

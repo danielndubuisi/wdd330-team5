@@ -1,3 +1,21 @@
+import { capitalizeFirstLetter, getResponsiveImage, renderListWithTemplate } from "./utils.mjs";
+
+function productCardTemplate(product) {
+  const isDiscounted = product.FinalPrice < product.SuggestedRetailPrice;
+
+  return `<li class="product-card">
+    <a href="/product_pages/?product=${product.Id}">
+      <img src="${getResponsiveImage(product)}" alt="Image of ${product.Name}">
+      <h2 class="card__brand">${product.Brand.Name}</h2>
+      <h3 class="card__name">${product.Name}</h3>
+      <p class="product-card__price">
+        $${product.FinalPrice}
+        ${isDiscounted ? `<span class="discount-flag">Discount!</span>` : ""}
+      </p>
+    </a>
+  </li>`;
+}
+
 export default class ProductList {
   constructor(category, dataSource, listElement) {
     this.category = category;
@@ -5,28 +23,12 @@ export default class ProductList {
     this.listElement = listElement;
   }
 
-  async init() {
-    const list = await this.dataSource.getData();
-    console.log("Full product list from JSON:", list);
-    this.renderList(list);
-  }
+    async init() {
+      const list = await this.dataSource.getData(this.category);
+      this.renderList(list);
+    }
 
-  renderList(productList) {
-    this.listElement.innerHTML = "";
-    productList.forEach((product) => {
-      this.listElement.innerHTML += this.productCardTemplate(product);
-    });
-  }
-
-  productCardTemplate(product) {
-    return `
-      <li class="product-card">
-        <a href="/product_pages/product-detail.html?product=${product.Id}">
-          <img src="${product.Image}" alt="${product.Name}">
-          <h2 class="card__name">${product.Name}</h2>
-          <p class="card__price">$${product.FinalPrice}</p>
-        </a>
-      </li>
-    `;
+  renderList(list) {
+    renderListWithTemplate(productCardTemplate, this.listElement, list);
   }
 }
