@@ -1,11 +1,16 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sleep Outside | Product Details</title>
+
+    <title>Sleep Outside | Cedar Ridge Rimrock 2-person tent</title>
 
     <link rel="stylesheet" href="../css/style.css" />
+
+    <script src="../js/product.js" type="module"></script>
   </head>
 
   <body>
@@ -41,9 +46,6 @@
             <path
               d="M60.1 71.4v3.3h-5.2v-3.4c-1.7-0.3-3.3-0.7-4.6-1 -0.9 6.8-1.1 13.3-0.3 14.5 0.4 0.3 2.9 1.1 8 1.1h0c5 0 8.8-0.7 9.7-1.3 0.8-1.3 0.6-7.7-0.4-14.4C65.5 70.5 62.7 71.1 60.1 71.4z"
             />
-
-            <!-- <text x="0" y="115" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by Natalia Woodroffe</text>
-            <text x="0" y="120" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text> -->
           </svg>
         </a>
       </div>
@@ -51,25 +53,25 @@
 
     <main class="divider">
       <section class="product-detail">
-        <!-- Dynamic content will be injected here by ProductDetails.mjs -->
-        <h3 id="productBrand"></h3>
-        <h2 id="productName" class="divider"></h2>
-
-        <img id="productImage" class="divider" src="" alt="" />
-
-        <p id="productFinalPrice" class="product-card__price"></p>
-        <p id="productColor" class="product__color"></p>
-        <p id="productDesc" class="product__description"></p>
-
+        <h3></h3>
+        <div class="product-image-container">
+          <img id="productImage" src="/images/tents/marmot-ajax-tent-3-person-3-season-in-pale-pumpkin-terracotta~p~880rr_01~320.jpg" alt="Product Name" />
+          <div class="ribbon" id="discountRibbon">SAVE $X.XX!</div>
+        </div>
+        <h2 class="divider"></h2>
+        <p id="productFinalPrice" class="product-card__priceDiscount"></p>
+        <del>
+          <p id="productPrice" class="product-card__price"></p>
+        </del>
+        <p id="savePrice" class="product-card__priceSaved"></p>
+        <p class="product__color" id="productColor"></p>
+        <p class="product__description" id="productDesc"></p>
         <div class="product-detail__add">
-          <button id="addToCart">Add to Cart</button>
+          <button id="addToCart" data-id="344YJ">Add to Cart</button>
         </div>
       </section>
     </main>
 
-    <footer>&copy; NOT a real business</footer>
-
-    <!-- Load dynamic details with ProductDetails -->
-    <script type="module" src="../js/product.js"></script>
+    <footer>&copy;NOT a real business</footer>
   </body>
 </html>
