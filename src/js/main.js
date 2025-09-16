@@ -1,7 +1,7 @@
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 
-// Create a data source for tents (points to tents.json)
+// Initialize product data and create a data source for tents (points to tents.json)
 const dataSource = new ProductData("tents");
 
 // Find the <ul class="product-list"> element in your index.html

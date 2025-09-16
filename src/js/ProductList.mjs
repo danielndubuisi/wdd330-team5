@@ -1,5 +1,6 @@
-import { capitalizeFirstLetter, getResponsiveImage, renderListWithTemplate } from "./utils.mjs";
+import { getResponsiveImage, renderListWithTemplate } from "./utils.mjs";
 
+// Template for a single product card
 function productCardTemplate(product) {
   const isDiscounted = product.FinalPrice < product.SuggestedRetailPrice;
 
@@ -16,6 +17,7 @@ function productCardTemplate(product) {
   </li>`;
 }
 
+// ProductList class
 export default class ProductList {
   constructor(category, dataSource, listElement) {
     this.category = category;
@@ -23,10 +25,10 @@ export default class ProductList {
     this.listElement = listElement;
   }
 
-    async init() {
-      const list = await this.dataSource.getData(this.category);
-      this.renderList(list);
-    }
+  async init() {
+    const list = await this.dataSource.getData(this.category);
+    this.renderList(list);
+  }
 
   renderList(list) {
     renderListWithTemplate(productCardTemplate, this.listElement, list);
