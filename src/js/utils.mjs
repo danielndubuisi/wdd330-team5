@@ -78,12 +78,23 @@ export function renderWithTemplate(template, parentElement, data, callback) {
 // -------------------------
 
 // load an external HTML file and return it as text (async)
-export async function loadTemplate(path) {
-  const item = await fetch(path);
-  const template = item.text();
-  return template;
-}
+//export async function loadTemplate(path) {
+ // const item = await fetch(path);
+ // const template = item.text();
+ // return template;
+//}
+export async function loadTemplate(path, elementId) {
+  try {
+    // Fetch the template file
+    const response = await fetch(path);
+    const template = await response.text();
 
+    // Insert into the placeholder
+    document.getElementById(elementId).innerHTML = template;
+  } catch (err) {
+    console.error(`Error loading in template ${path}:`, err);
+  }
+}
 // -------------------------
 // Header & Footer Loader
 // -------------------------
