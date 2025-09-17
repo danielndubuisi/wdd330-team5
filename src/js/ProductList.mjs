@@ -32,7 +32,8 @@ export default class ProductList {
       <li class="product-card" id="${product.Id}">
         <a href="/product_pages/?product=${product.Id}">
           <div class="product-image-wrapper">
-            <img src="${getResponsiveImage(product)}" 
+            <!-- Use PrimaryMedium image from API for listing -->
+            <img src="${product.Images?.PrimaryMedium}" 
                  alt="${product.NameWithoutBrand || product.Name}" />
             ${
               isDiscounted
