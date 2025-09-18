@@ -1,18 +1,9 @@
-// =========================
-// Utility Functions
-// =========================
-
 // wrapper for querySelector...returns the first matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
-// or a more concise version if you are into that sort of thing:
-// export const qs = (selector, parent = document) => parent.querySelector(selector);
 
-// -------------------------
 // LocalStorage Helpers
-// -------------------------
-
 // retrieve data from localStorage and parse it as JSON
 export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
@@ -23,10 +14,12 @@ export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-// -------------------------
-// Event Listener Helpers
-// -------------------------
+// remove a key completely from localStorage
+export function removeLocalStorageKey(key) {
+  localStorage.removeItem(key);
+}
 
+// Event Listener Helpers
 // set a listener for both touchend (mobile) and click (desktop)
 // ensures compatibility across devices
 export function setClick(selector, callback) {
@@ -37,30 +30,27 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-// -------------------------
 // URL Parameter Helper
-// -------------------------
-
 // get a query parameter from the URL (e.g. ?product=123 → returns "123")
 export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const product = urlParams.get(param);
-  return product;
+  return urlParams.get(param);
 }
 
-// -------------------------
 // Rendering Helpers
-// -------------------------
 
 // render a list of items using a template function
 // inserts all items into a parentElement at a chosen position
-export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
-  clear ? parentElement.innerHTML = "" : 0;
+export function renderListWithTemplate(
+  templateFn,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = false
+) {
+  if (clear) parentElement.innerHTML = "";
   const htmlStrings = list.map(templateFn);
-  if (clear) {
-    parentElement.innerHTML = "";
-  }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 
@@ -73,31 +63,15 @@ export function renderWithTemplate(template, parentElement, data, callback) {
   }
 }
 
-// -------------------------
 // Template Loader
-// -------------------------
-
-// load an external HTML file and return it as text (async)
-//export async function loadTemplate(path) {
- // const item = await fetch(path);
- // const template = item.text();
- // return template;
-//}
-export async function loadTemplate(path, elementId) {
-  try {
-    // Fetch the template file
-    const response = await fetch(path);
-    const template = await response.text();
-
-    // Insert into the placeholder
-    document.getElementById(elementId).innerHTML = template;
-  } catch (err) {
-    console.error(`Error loading in template ${path}:`, err);
-  }
+// load HTML template from partials
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
 }
-// -------------------------
+
 // Header & Footer Loader
-// -------------------------
 
 // load header and footer templates, render them, and update cart count
 export async function loadHeaderFooter() {
@@ -121,16 +95,19 @@ function updateCartCount() {
   }
 }
 
-// -------------------------
 // Array Helpers
-// -------------------------
 
 // find index of an object in an array by matching a specific attribute and value
 export function getLocalStorageItemIndex(array, attr, value) {
   let i = array.length;
   let indexNumber = 0;
   while (i--) {
-    if (array[i] && array[i].hasOwnProperty(attr) && (arguments.length > 2 && array[i][attr] === value)) {
+    if (
+      array[i] &&
+      array[i].hasOwnProperty(attr) &&
+      arguments.length > 2 &&
+      array[i][attr] === value
+    ) {
       indexNumber = i;
     }
   }
@@ -144,37 +121,15 @@ export function capitalizeFirstLetter(text) {
 
 // check if a product is already in an array (by product Id)
 export function productIsInArray(productId, array) {
-  let IsTrue = false;
-  array.forEach(item => {
-    if (item.Id == productId) {
-      IsTrue = true;
-    }
-  });
-  return IsTrue;
+  return array.some((item) => item.Id == productId);
 }
 
 // find the index of a product in an array (by product Id)
 export function findProductIndexInArrayById(productId, array) {
-  let i = 0;
-  let index = 0;
-  array.forEach(item => {
-    if (item.Id == productId) {
-      index = i;
-    } else {
-      i++;
-    }
-  });
-  return index;
+  return array.findIndex((item) => item.Id == productId);
 }
 
-// remove a key completely from localStorage
-export function removeLocalStorageKey(key) {
-  localStorage.removeItem(key);
-}
-
-// -------------------------
 // Image Helpers
-// -------------------------
 
 // get the correct product image depending on screen width
 // uses responsive sizes (Small, Medium, Large, ExtraLarge)
@@ -182,22 +137,13 @@ export function removeLocalStorageKey(key) {
 export function getResponsiveImage(product) {
   const width = window.innerWidth;
 
-  /**
-   * Normalize relative image paths.
-   * Many product images are stored with "../" at the beginning (e.g. "../images/product.jpg"),
-   * which breaks when loaded in the browser. This helper strips "../" and replaces it with "/",
-   * turning it into a valid absolute path (e.g. "/images/product.jpg").
-   *
-   * Example:
-   *   fixPath("../images/item.png") → "/images/item.png"
-   *   fixPath("images/item.png")    → "images/item.png"  (unchanged)
-   */
+  // Normalize relative image paths
   function fixPath(path) {
     if (!path) return "";
     return path.replace(/^\.\.\//, "/");
   }
 
-  let images = product.Images || {};
+  const images = product.Images || {};
 
   if (width < 600 && images?.PrimarySmall) {
     return fixPath(images.PrimarySmall);
