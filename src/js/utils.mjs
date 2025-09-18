@@ -4,34 +4,33 @@ export function qs(selector, parent = document) {
 }
 
 // LocalStorage Helpers
-// retrieve data from localStorage and parse it as JSON
 export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 
-// save data to localStorage as JSON
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-// remove a key completely from localStorage
 export function removeLocalStorageKey(key) {
   localStorage.removeItem(key);
 }
 
 // Event Listener Helpers
-// set a listener for both touchend (mobile) and click (desktop)
-// ensures compatibility across devices
 export function setClick(selector, callback) {
-  qs(selector).addEventListener("touchend", (event) => {
+  const el = qs(selector);
+  if (!el) {
+    console.warn(`setClick: selector ${selector} not found`);
+    return;
+  }
+  el.addEventListener("touchend", (event) => {
     event.preventDefault();
     callback();
   });
-  qs(selector).addEventListener("click", callback);
+  el.addEventListener("click", callback);
 }
 
 // URL Parameter Helper
-// get a query parameter from the URL (e.g. ?product=123 → returns "123")
 export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -39,9 +38,6 @@ export function getParam(param) {
 }
 
 // Rendering Helpers
-
-// render a list of items using a template function
-// inserts all items into a parentElement at a chosen position
 export function renderListWithTemplate(
   templateFn,
   parentElement,
@@ -49,14 +45,20 @@ export function renderListWithTemplate(
   position = "afterbegin",
   clear = false
 ) {
+  if (!parentElement) {
+    console.warn("renderListWithTemplate: parentElement not found");
+    return;
+  }
   if (clear) parentElement.innerHTML = "";
   const htmlStrings = list.map(templateFn);
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 
-// render a single template with optional callback
-// usually used for header/footer or single product details
 export function renderWithTemplate(template, parentElement, data, callback) {
+  if (!parentElement) {
+    console.warn("renderWithTemplate: parentElement not found");
+    return;
+  }
   parentElement.innerHTML = template;
   if (callback) {
     callback(data);
@@ -64,7 +66,6 @@ export function renderWithTemplate(template, parentElement, data, callback) {
 }
 
 // Template Loader
-// load HTML template from partials
 export async function loadTemplate(path) {
   const res = await fetch(path);
   const template = await res.text();
@@ -72,11 +73,10 @@ export async function loadTemplate(path) {
 }
 
 // Header & Footer Loader
-
-// load header and footer templates, render them, and update cart count
 export async function loadHeaderFooter() {
-  const header = document.querySelector("header");
-  const footer = document.querySelector("footer");
+  const header = document.querySelector("#main-header");
+  const footer = document.querySelector("#main-footer");
+
   const headerContent = await loadTemplate("../partials/header.html");
   const footerContent = await loadTemplate("../partials/footer.html");
 
@@ -96,8 +96,6 @@ function updateCartCount() {
 }
 
 // Array Helpers
-
-// find index of an object in an array by matching a specific attribute and value
 export function getLocalStorageItemIndex(array, attr, value) {
   let i = array.length;
   let indexNumber = 0;
@@ -114,30 +112,22 @@ export function getLocalStorageItemIndex(array, attr, value) {
   return indexNumber;
 }
 
-// capitalize the first letter of a string
 export function capitalizeFirstLetter(text) {
   return String(text).charAt(0).toUpperCase() + String(text).slice(1);
 }
 
-// check if a product is already in an array (by product Id)
 export function productIsInArray(productId, array) {
   return array.some((item) => item.Id == productId);
 }
 
-// find the index of a product in an array (by product Id)
 export function findProductIndexInArrayById(productId, array) {
   return array.findIndex((item) => item.Id == productId);
 }
 
 // Image Helpers
-
-// get the correct product image depending on screen width
-// uses responsive sizes (Small, Medium, Large, ExtraLarge)
-// also fixes relative paths like "../images/" → "/images/"
 export function getResponsiveImage(product) {
   const width = window.innerWidth;
 
-  // Normalize relative image paths
   function fixPath(path) {
     if (!path) return "";
     return path.replace(/^\.\.\//, "/");
