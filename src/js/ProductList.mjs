@@ -1,4 +1,22 @@
+
 import { renderListWithTemplate, getResponsiveImage } from "./utils.mjs";
+
+// Template for a single product card
+function productCardTemplate(product) {
+  const isDiscounted = product.FinalPrice < product.SuggestedRetailPrice;
+
+  return `<li class="product-card">
+    <a href="/product_pages/?product=${product.Id}">
+      <img src="${getResponsiveImage(product)}" alt="Image of ${product.Name}">
+      <h2 class="card__brand">${product.Brand.Name}</h2>
+      <h3 class="card__name">${product.Name}</h3>
+      <p class="product-card__price">
+        $${product.FinalPrice}
+        ${isDiscounted ? `<span class="discount-flag">Discount!</span>` : ""}
+      </p>
+    </a>
+  </li>`;
+}
 
 // ProductList class
 export default class ProductList {
@@ -15,6 +33,9 @@ export default class ProductList {
       return;
     }
     this.renderList(productList);
+
+    const list = await this.dataSource.getData(this.category);
+    this.renderList(list);
   }
 
   renderList(productList) {
