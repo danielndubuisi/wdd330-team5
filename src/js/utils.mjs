@@ -57,11 +57,11 @@ export function getParam(param) {
 // inserts all items into a parentElement at a chosen position
 export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
   clear ? parentElement.innerHTML = "" : 0;
-  const htmlStrings = list.map(templateFn);
+  const htmlStrings = list?.map(templateFn);
   if (clear) {
     parentElement.innerHTML = "";
   }
-  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+  parentElement?.insertAdjacentHTML(position, htmlStrings?.join(""));
 }
 
 // render a single template with optional callback
