@@ -1,8 +1,8 @@
 // Import the utility function to load header and footer
-// Other imports can go here as needed
 import { loadHeaderFooter } from "./utils.mjs";
+import "../css/style.css";
 
-// Load header and footer 
-loadHeaderFooter();
-
-// Other code for main.js can go here
+// Load header and footer when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  loadHeaderFooter();
+});
