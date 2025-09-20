@@ -1,10 +1,10 @@
-import { getLocalStorage, renderListWithTemplate } from "./utils.mjs";
+import { getLocalStorage, getResponsiveImage, renderListWithTemplate } from "./utils.mjs";
 
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
+      src="${getResponsiveImage(item)}"
       alt="${item.Name}"
     />
   </a>

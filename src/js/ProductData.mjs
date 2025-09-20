@@ -1,3 +1,5 @@
+const baseURL = import.meta.env.VITE_SERVER_URL;
+
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -7,24 +9,20 @@ function convertToJson(res) {
 }
 
 export default class ProductData {
-  constructor(category) {
-    this.category = category;
+  constructor() {
     // Always served from /json/... because it's inside public/
-    this.path = `/json/${this.category}.json`;
+    // this.path = `/json/${this.category}.json`;
   }
 
-  async getData() {
-    try {
-      const data = await fetch(this.path).then(convertToJson);
-      return data;
-    } catch (err) {
-      console.error("Error loading data:", err);
-      return [];
-    }
+  async getData(category) {
+    const response = await fetch(`${baseURL}products/search/${category} `);
+    const data = await convertToJson(response);
+    return data.Result;
   }
 
   async findProductById(id) {
-    const products = await this.getData();
-    return products.find((item) => item.Id === id);
+    const response = await fetch(`${baseURL}product/${id}`);
+    const product = await convertToJson(response);
+    return product.Result;
   }
 }
